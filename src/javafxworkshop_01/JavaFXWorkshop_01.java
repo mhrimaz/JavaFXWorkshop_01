@@ -6,9 +6,6 @@
 package javafxworkshop_01;
 
 import javafx.application.Application;
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.DoubleBinding;
-import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -36,6 +33,7 @@ public class JavaFXWorkshop_01 extends Application {
                 source = (Circle) eventDrag.getSource();
                 source.setCenterX(eventDrag.getSceneX());
                 source.setCenterY(eventDrag.getSceneY());
+                source.setFill(Color.RED);
                 eventDrag.consume();
             });
             circle.setOnMouseClicked(eventClick -> {
