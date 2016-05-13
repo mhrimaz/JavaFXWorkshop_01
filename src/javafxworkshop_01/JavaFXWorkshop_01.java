@@ -5,7 +5,10 @@
  */
 package javafxworkshop_01;
 
+import java.util.concurrent.Callable;
 import javafx.application.Application;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.DoubleBinding;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -23,6 +26,7 @@ public class JavaFXWorkshop_01 extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+
         Pane root = new Pane();
         root.setOnMouseClicked(event -> {
             if (event.isConsumed() || event.getSource().getClass().getSimpleName().equals("Circle")) {
@@ -53,7 +57,20 @@ public class JavaFXWorkshop_01 extends Application {
                         line.startYProperty().bind(source.centerYProperty());
                         line.endXProperty().bind(target.centerXProperty());
                         line.endYProperty().bind(target.centerYProperty());
-                        
+                        DoubleBinding lenghtBinding = Bindings.createDoubleBinding(() -> {
+                            double subX = line.startXProperty().get() - line.endXProperty().get();
+                            double subY = line.startYProperty().get() - line.endYProperty().get();
+                            double pureLength = Math.sqrt(subX * subX + subY * subY);
+                            double length = (1 / pureLength) * Math.pow(10, 3);
+                            if (length > 25) {
+                                length = 25;
+                            }
+                            if (length < 2) {
+                                length = 2;
+                            }
+                            return length;
+                        }, line.startXProperty(), line.startYProperty(), line.endXProperty(), line.endYProperty());
+                        line.strokeWidthProperty().bind(lenghtBinding);
                     }
                     source.setFill(Color.DARKSALMON);
                     source = null;
